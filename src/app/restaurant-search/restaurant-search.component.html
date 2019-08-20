@@ -1,51 +1,73 @@
 <div class="container mt-5">
-  <form>
-    <mat-form-field class="example-full-width form-group">
-      <input
-        #search
-        id="city"
-        type="text"
-        placeholder="Enter your city"
-        aria-label="Number"
-        matInput
-        [formControl]="myControl"
-        [matAutocomplete]="auto"
-        (keyup)="onInput()"
-        class="text-center "
-      />
-      <mat-autocomplete #auto="matAutocomplete">
-        <mat-option
-          *ngFor="let option of options"
-          [value]="option"
-          (onSelectionChange)="onSearch(option)"
-        >
-          {{ option }}
-        </mat-option>
-      </mat-autocomplete>
-    </mat-form-field>
-  </form>
-
-  <div class="text-center mb-5" *ngIf="selectedCity !== ''">
-    <h4>Restaurants near to "{{ selectedCity }}"</h4>
-  </div>
-
-  <div class="row">
-    <div
-      *ngFor="let restaurant of restaurants"
-      class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 px-1"
-    >
-      <div class="card" style="min-height: 20rem">
-        <img
-          [src]="restaurant.thumb"
-          class="card-img-top"
-          [alt]="restaurant.name"
+  <h1 class="text-center">Find Restaurants Around You!</h1>
+  <div>
+    <form>
+      <mat-form-field class="example-full-width form-group">
+        <input
+          #search
+          id="city"
+          type="text"
+          placeholder="Enter your city [ i.e: New York ]"
+          aria-label="Number"
+          matInput
+          [formControl]="myControl"
+          [matAutocomplete]="auto"
+          (keyup)="onInput()"
+          class="text-center "
         />
-        <div class="card-body">
-          <h5 class="card-title">{{ restaurant.name }}</h5>
-          <p class="card-text"></p>
-          <a [href]="restaurant.url" class="btn btn-primary">Go to the site</a>
+        <mat-autocomplete #auto="matAutocomplete">
+          <mat-option
+            *ngFor="let option of options"
+            [value]="option"
+            (onSelectionChange)="onSearch(option)"
+          >
+            {{ option }}
+          </mat-option>
+        </mat-autocomplete>
+      </mat-form-field>
+    </form>
+
+    <div>
+      <div class="text-center mb-5" *ngIf="selectedCity !== ''">
+        <h4>Restaurants near to "{{ selectedCity }}"</h4>
+      </div>
+      <div class="row">
+        <div
+          *ngFor="let restaurant of restaurants"
+          class="col-xs-6 col-sm-6 col-md-4 col-lg-3 col-xl-3 px-1"
+        >
+          <div class="card" style="min-height: 20rem">
+            <img
+              [src]="restaurant.thumb"
+              class="card-img-top"
+              [alt]="restaurant.name"
+            />
+            <div class="card-body">
+              <h5 class="card-title">{{ restaurant.name }}</h5>
+              <p class="card-text"></p>
+              <a [href]="restaurant.url" class="btn btn-primary"
+                >Go to the site</a
+              >
+            </div>
+          </div>
         </div>
       </div>
     </div>
+
+    <button (click)="generatePDF()" class="btn btn-warning btn-block mt-2 mb-5">
+      Download PDF
+    </button>
+  </div>
+
+  <div style="margin-top: -200000px" id="PDF_Content">
+    <div class="text-center mx-5 p-5" *ngIf="selectedCity !== ''">
+      <h1>Restaurants near to "{{ selectedCity }}"</h1>
+    </div>
+    <ul *ngFor="let restaurant of restaurants">
+      <li>
+        <h5>{{ restaurant.name }}</h5>
+      </li>
+      <li>{{ restaurant.url }}</li>
+    </ul>
   </div>
 </div>

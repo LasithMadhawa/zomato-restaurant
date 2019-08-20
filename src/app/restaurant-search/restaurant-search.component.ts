@@ -24,7 +24,6 @@ export class RestaurantSearchComponent implements OnInit, OnDestroy {
   ngOnInit() {}
 
   onInput() {
-    // console.log(this.myControl.value);
     this.restaurantService.getCities(this.myControl.value);
     this.locationSub = this.restaurantService
       .getLocationFilteredListener()
@@ -45,8 +44,11 @@ export class RestaurantSearchComponent implements OnInit, OnDestroy {
       .subscribe(restaurants => {
         this.restaurants = [];
         this.restaurants = restaurants;
-        // console.log(restaurants);
       });
+  }
+
+  generatePDF() {
+    this.restaurantService.genaratePdf();
   }
 
   ngOnDestroy() {
