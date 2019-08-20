@@ -4,6 +4,9 @@ import { Subject } from "rxjs";
 import { City } from "./city.model";
 import { Restaurant } from "./restaurant.model";
 
+import * as jspdf from "jspdf";
+import html2canvas from "html2canvas";
+
 @Injectable({ providedIn: "root" })
 export class RestaurantService {
   private restaurants: Restaurant[] = [];
@@ -31,7 +34,6 @@ export class RestaurantService {
         }
       )
       .subscribe(response => {
-        // console.log(response.location_suggestions);
         this.locations = response.location_suggestions;
         this.locationsFiltered.next([...this.locations]);
       });
@@ -56,7 +58,6 @@ export class RestaurantService {
         }
       )
       .subscribe(response => {
-        // console.log(response.location_suggestions);
         filteredCity = response.location_suggestions[0];
         console.log(filteredCity.id);
         this.http
@@ -71,9 +72,6 @@ export class RestaurantService {
             response.restaurants.forEach(rest => {
               this.restaurants.push(rest.restaurant);
             });
-            // console.log(response.restaurants[0].restaurant);
-            // console.log(this.restaurants);
-            // this.restaurants = response.restaurants;
             this.restaurantsFiltered.next([...this.restaurants]);
           });
       });
@@ -81,5 +79,19 @@ export class RestaurantService {
 
   getRestaurantsFilteredListener() {
     return this.restaurantsFiltered.asObservable();
+  }
+
+  genaratePdf() {
+    const print = document.getElementById("PDF_Content");
+    html2canvas(print).then(canvas => {
+      const imgWidth = 208;
+      const imgHeight = (canvas.height * imgWidth) / canvas.width;
+
+      const contentDataURL = canvas.toDataURL("image/png");
+      const pdf = new jspdf("p", "mm", "a4");
+      const position = 0;
+      pdf.addImage(contentDataURL, "PNG", 0, position, imgWidth, imgHeight);
+      pdf.save("restaurants.pdf");
+    });
   }
 }
