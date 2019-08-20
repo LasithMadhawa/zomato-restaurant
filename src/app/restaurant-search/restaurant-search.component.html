@@ -29,7 +29,10 @@
 
     <div>
       <div class="text-center mb-5" *ngIf="selectedCity !== ''">
-        <h4>Restaurants near to "{{ selectedCity }}"</h4>
+        <h4>
+          Restaurants near to
+          <span class="text-primary">{{ selectedCity }}</span>
+        </h4>
       </div>
       <div class="row">
         <div
